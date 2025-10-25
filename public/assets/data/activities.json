@@ -798,5 +798,25 @@
     "url": "https://client.eaglercraft.win/eagler-files/modded/1.8/EaglyMC/index.html",
     "name": "Minecraft 1.20.1",
     "image": "/assets/imgs/minecraft.png"
+  },
+  {
+    "url": "https://jcw87.github.io/c2-sans-fight/",
+    "name": "Undertale",
+    "image": "/assets/imgs/undertaile.jpeg"
+  },
+  {
+    "url": "https://games.crazygames.com/en_US/ragdoll-archers/index.html?isNewUser=true&skipPrerollFirstSession=true&v=1.343",
+    "name": "Ragdoll Archers",
+    "image": "/assets/imgs/ragdoll-archers.png"
+  },
+  {
+    "url": "https://games.crazygames.com/en_US/jetpack-joyride-pcp/index.html?v=1.343",
+    "name": "Jetpack Joyride",
+    "image": "/assets/imgs/jetpack.png"
+  },
+  {
+    "url": "https://g.deev.is/fnaw",
+    "name": "Five Nights at Winston's",
+    "image": "/assets/imgs/fnaw.png"
   }
 ]
