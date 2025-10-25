@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Browser</title>
+  <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png" />
+
+  <!-- Open Graph Meta -->
+  <meta property="og:title" content="Platinum">
+  <meta property="og:url" content="https://platinumunblocker.com/">
+  <meta property="og:image" content="/assets/img/embed.png">
+  <meta property="og:description" content="One of the fastest unblockers out there!">
+
+  <!-- Prefetch for performance -->
+  <link rel="prefetch" href="/scram/scramjet.worker.js" />
+  <link rel="prefetch" href="/scram/scramjet.shared.js" />
+  <script src="assets/js/report.js"></script>
+
+  <!-- Base Scripts (Core Services) -->
+  <script src="/baremux/index.js" defer></script>
+  <script src="/epoxy/index.js" defer></script>
+  <script src="/uv/uv.bundle.js" defer></script>
+  <script src="/uv/uv.config.js" defer></script>
+  <script src="/scram/scramjet.controller.js" defer></script>
+  <script src="/ec/eclipse.codecs.js" defer></script>
+  <script src="/ec/eclipse.config.js" defer></script>
+
+  <style>
+    body {
+      margin: 0;
+    }
+    iframe {      
+      display: block;
+      height: 100vh;
+      width: 100vw;
+      border: none;
+      background: lightyellow;
+    }
+    #back-button {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background-color: #0078ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 15px;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+    #back-button:hover {
+      background-color: #005fcc;
+    }
+  </style>
+</head>
+<body>
+  <button id="back-button">Back</button>
+
+  <iframe src="" height="100%" width="100%" frameborder="0" id="rframe" class="active"></iframe>
+
+  <script src="assets/js/browser.js" defer></script>
+  <script src="assets/js/report.js"></script>
+  <script src="scram/scramjet.controller.js" defer></script>
+  <script>
+    document.getElementById("rframe").src = localStorage.getItem("rurl");
+    document.getElementById("back-button").addEventListener("click", () => {
+      window.location.href = "/@";
+    });
+  </script>
+</body>
+</html>

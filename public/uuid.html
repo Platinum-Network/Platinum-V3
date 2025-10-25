@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator</title>
+    <script>
+        // Function to generate a UUID
+        function generateUUID() {
+            // Generate a UUID using the pattern: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Function to store the UUID in localStorage
+        function storeUUID() {
+            const uuid = generateUUID();
+            localStorage.setItem('uuid', uuid);
+            document.getElementById('uuidDisplay').textContent = 'Stored UUID: ' + uuid;
+        }
+
+        // Function to retrieve the UUID from localStorage
+        function retrieveUUID() {
+            const uuid = localStorage.getItem('uuid');
+            if (uuid) {
+                document.getElementById('uuidDisplay').textContent = 'Stored UUID: ' + uuid;
+            } else {
+                document.getElementById('uuidDisplay').textContent = 'No UUID stored in localStorage';
+            }
+        }
+
+        // Check if UUID already exists on page load
+        window.onload = function() {
+            retrieveUUID();
+        }
+    </script>
+</head>
+<body>
+    <h1>UUID Generator and LocalStorage</h1>
+    <button onclick="storeUUID()">Generate and Store UUID</button>
+    <p id="uuidDisplay"></p>
+</body>
+</html>

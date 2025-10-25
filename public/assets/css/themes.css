@@ -1,0 +1,99 @@
+/* Base Variables */
+:root {
+  --primary: #222131;
+  --secondary: #1a1a1a;
+  --accent: rgb(0, 153, 255);
+  --searchbar: #1f2937;
+  --iconbg: #374151;
+  --custom-bg: none;
+  --sidebar-bg: var(--secondary);
+  --font: #ffffff;
+}
+
+/* Apply variables to elements */
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: var(--primary);
+  color: var(--font);
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, background-image 0.3s ease;
+  background-image: var(--custom-bg);
+}
+
+.sidebar {
+  background-color: var(--sidebar-bg);
+  transition: background-color 0.3s ease, background-image 0.3s ease;
+}
+
+/* Default Theme (same as root) */
+:root.theme-default,
+html.theme-default {
+  --primary: #222131 !important;
+  --secondary: #1a1a1a !important;
+  --accent: rgb(0, 153, 255) !important;
+  --searchbar: #1f2937 !important;
+  --iconbg: #374151 !important;
+  --sidebar-bg: #1a1a1a !important;
+  --font: #ffffff !important;
+}
+
+/* Ocean Theme */
+:root.theme-ocean,
+html.theme-ocean {
+  --primary: #0d1117 !important;
+  --secondary: #1f6feb !important;
+  --accent: #0969da !important;
+  --searchbar: #161b22 !important;
+  --iconbg: #21262d !important;
+  --sidebar-bg: #161b22 !important;
+  --font: #ffffff !important;
+}
+
+/* Teal Theme */
+:root.theme-teal,
+html.theme-teal {
+  --primary: #111827 !important;
+  --secondary: #14b8a6 !important;
+  --accent: #0d9488 !important;
+  --searchbar: #1f2937 !important;
+  --iconbg: #374151 !important;
+  --sidebar-bg: #1f2937 !important;
+  --font: #ffffff !important;
+}
+
+/* Ember Theme */
+:root.theme-ember,
+html.theme-ember {
+  --primary: #1a1a1a !important;
+  --secondary: #f7931e !important;
+  --accent: #ff6b35 !important;
+  --searchbar: #2d2d2d !important;
+  --iconbg: #404040 !important;
+  --sidebar-bg: #2d2d2d !important;
+  --font: #ffffff !important;
+}
+
+/* Slate Theme */
+:root.theme-slate,
+html.theme-slate {
+  --primary: #0f172a !important;
+  --secondary: #64748b !important;
+  --accent: #475569 !important;
+  --searchbar: #1e293b !important;
+  --iconbg: #334155 !important;
+  --sidebar-bg: #1e293b !important;
+  --font: #ffffff !important;
+}
+
+#particles-js {
+  position: fixed;   /* cover the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;        /* behind all content */
+  pointer-events: none; /* clicks go through */
+}

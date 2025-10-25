@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Browser</title>
+  <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png" />
+
+  <!-- Open Graph Meta -->
+  <meta property="og:title" content="Platinum">
+  <meta property="og:url" content="https://platinumunblocker.com/">
+  <meta property="og:image" content="/assets/img/embed.png">
+  <meta property="og:description" content="One of the fastest unblockers out there!">
+
+  <!-- Prefetch for performance -->
+  <link rel="prefetch" href="/scram/scramjet.worker.js" />
+  <link rel="prefetch" href="/scram/scramjet.shared.js" />
+
+  <!-- Base Scripts (Core Services) -->
+  <script src="/baremux/index.js" defer></script>
+  <script src="/epoxy/index.js" defer></script>
+  <script src="/uv/uv.bundle.js" defer></script>
+  <script src="/uv/uv.config.js" defer></script>
+  <script src="/scram/scramjet.controller.js" defer></script>
+  <script src="/ec/eclipse.codecs.js" defer></script>
+  <script src="/ec/eclipse.config.js" defer></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/themes.css">
+  <link rel="stylesheet" href="assets/css/quiz.css">
+
+  <!-- Init Scripts -->
+  <script src="/assets/js/init.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="left-icons">
+      <div class="icon">
+        <a onclick="goBack()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+          </svg>
+        </a>
+      </div>
+      <div class="icon">
+        <a id="reload">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
+          </svg>
+        </a>
+      </div>
+      <div class="icon">
+        <a onclick="goForward()">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <form id="form">
+      <input id="input" class="search-bar" type="text" placeholder="Search or enter a URL..." />
+    </form>
+
+    <!-- Right Icons -->
+    <div class="right-icons">
+      <div class="icon">
+        <a href="/search">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="icon right">
+        <a id="devtools">
+          <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.90451 6.92144C8.41341 6.45495 8.44779 5.66424 7.9813 5.15534C7.51481 4.64645 6.7241 4.61207 6.2152 5.07856L7.90451 6.92144ZM1.46194 11.1314L2.3066 12.0529L1.46194 11.1314ZM1.46194 11.8686L2.3066 10.9471L1.46194 11.8686ZM6.2152 17.9214C6.7241 18.3879 7.51481 18.3536 7.9813 17.8447C8.44779 17.3358 8.41341 16.545 7.90451 16.0786L6.2152 17.9214ZM6.2152 5.07856L0.617287 10.21L2.3066 12.0529L7.90451 6.92144L6.2152 5.07856ZM0.617287 12.79L6.2152 17.9214L7.90451 16.0786L2.3066 10.9471L0.617287 12.79ZM0.617287 10.21C-0.139356 10.9036 -0.139356 12.0964 0.617287 12.79L2.3066 10.9471C2.63087 11.2444 2.63087 11.7556 2.3066 12.0529L0.617287 10.21Z" fill="#e3e3e3"></path>
+            <path d="M16.0557 16.0786C15.5468 16.545 15.5125 17.3358 15.9789 17.8447C16.4454 18.3536 17.2361 18.3879 17.745 17.9214L16.0557 16.0786ZM22.4983 11.8686L21.6537 10.9471L22.4983 11.8686ZM22.4983 11.1314L21.6537 12.0529L22.4983 11.1314ZM17.745 5.07856C17.2361 4.61207 16.4454 4.64645 15.979 5.15534C15.5125 5.66424 15.5468 6.45495 16.0557 6.92144L17.745 5.07856ZM17.745 17.9214L23.343 12.79L21.6537 10.9471L16.0557 16.0786L17.745 17.9214ZM23.343 10.21L17.745 5.07856L16.0557 6.92144L21.6537 12.0529L23.343 10.21ZM23.343 12.79C24.0996 12.0964 24.0996 10.9036 23.343 10.21L21.6537 12.0529C21.3294 11.7556 21.3294 11.2444 21.6537 10.9471L23.343 12.79Z" fill="#e3e3e3"></path>
+            <path d="M15.2127 3.80317C15.3801 3.13343 14.9729 2.45476 14.3032 2.28732C13.6334 2.11989 12.9548 2.52709 12.7873 3.19683L15.2127 3.80317ZM8.78732 19.1968C8.61989 19.8666 9.02709 20.5452 9.69683 20.7127C10.3666 20.8801 11.0452 20.4729 11.2127 19.8032L8.78732 19.1968ZM12.7873 3.19683L8.78732 19.1968L11.2127 19.8032L15.2127 3.80317L12.7873 3.19683Z" fill="#e3e3e3"></path>
+          </svg>
+        </a>
+      </div>
+
+      <div class="icon">
+        <a id="fullscreen">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3">
+            <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Frame Container -->
+  <div class="frame-container" id="frame-container">
+    <iframe src="" frameborder="0" id="frame" class="active"></iframe>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/browser.js" defer></script>
+  <script src="assets/js/themes.js" defer></script>
+  <script src="scram/scramjet.controller.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/gh/thefluxion/CDN@main/analytics.js" defer></script>
+</body>
+</html>

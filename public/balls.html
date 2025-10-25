@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unban Page</title>
+<style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+    input { padding: 10px; width: 200px; margin: 10px 0; }
+    button { padding: 10px 20px; cursor: pointer; }
+    #message { margin-top: 20px; color: red; }
+</style>
+</head>
+<body>
+<h1>Unban Yourself</h1>
+<p>Enter the password to remove the block</p>
+<input type="password" id="password" placeholder="Password">
+<br>
+<button id="unlockBtn">Unlock</button>
+<div id="message"></div>
+
+<script>
+// === Fingerprint function (same as your chat system) ===
+async function getFingerprint() {
+    function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);}return(h>>>0).toString(16);}
+    function canvasFP(){const c=document.createElement('canvas');const ctx=c.getContext('2d');ctx.font='16px Arial';ctx.fillText('fp-demo',2,2);ctx.fillRect(50,10,100,20);return c.toDataURL();}
+    function webglFP(){const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl)return'';const dbg=gl.getExtension('WEBGL_debug_renderer_info');return[gl.getParameter(gl.VERSION),gl.getParameter(gl.VENDOR),gl.getParameter(gl.RENDERER),dbg?gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL):'',dbg?gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL):''].join('|');}
+    async function audioFP(){return new Promise(resolve=>{const AC=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!AC)return resolve('');const ctx=new AC(1,44100,44100);const osc=ctx.createOscillator();const anl=ctx.createAnalyser();osc.connect(anl);anl.connect(ctx.destination);osc.start(0);ctx.startRendering().then(buf=>resolve(buf.getChannelData(0).slice(0,1000).reduce((a,b)=>a+b,0).toString())).catch(()=>resolve(''));});}
+    function browserInfo(){return[navigator.userAgent,screen.width,screen.height,screen.colorDepth,Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');}
+    const combined=[hash(canvasFP()),hash(webglFP()),hash(await audioFP()),hash(browserInfo())].join('|');
+    return hash(combined);
+}
+
+// === Handle unlock button ===
+document.getElementById("unlockBtn").addEventListener("click", async () => {
+    const password = document.getElementById("password").value.trim();
+    const messageDiv = document.getElementById("message");
+    messageDiv.style.color = "red";
+
+    if (!password) {
+        messageDiv.textContent = "Please enter the password!";
+        return;
+    }
+
+    const fingerprint = await getFingerprint();
+
+    try {
+        const res = await fetch("/api/unban", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fingerprint, password }),
+            credentials: "same-origin"
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            messageDiv.style.color = "green";
+            messageDiv.textContent = "Unbanned successfully! Redirecting...";
+            setTimeout(() => window.location.href = "/@", 1000);
+        } else {
+            messageDiv.textContent = data.error || "Incorrect password or failed to unban.";
+        }
+
+    } catch (err) {
+        console.error(err);
+        messageDiv.textContent = "Server error. Please try again.";
+    }
+});
+</script>
+</body>
+</html>

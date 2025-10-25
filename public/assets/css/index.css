@@ -1,0 +1,387 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 160px;
+  background-color: var(--sidebar-bg);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 4px;
+  margin-right: 10px;
+  position: relative;
+}
+
+.logo-icon::after {
+  content: "P";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--font);
+}
+
+.nav-menu {
+  list-style: none;
+  flex-grow: 1;
+}
+
+.nav-item {
+  margin-bottom: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+  border-radius: 8px;
+  margin: 0 12px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: var(--iconbg);
+  color: var(--font);
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  opacity: 0.7;
+}
+
+.settings-section {
+  padding: 20px;
+  border-top: 1px solid var(--iconbg);
+  margin-top: auto;
+}
+
+.settings-link {
+  display: flex;
+  align-items: center;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.settings-link:hover {
+  color: var(--font);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.search-section {
+  text-align: center;
+  margin-bottom: 80px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-title {
+  font-size: 48px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: var(--font);
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 24px;
+  background-color: var(--searchbar);
+  border: 1px solid var(--iconbg);
+  border-radius: 12px;
+  color: var(--font);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input::placeholder {
+  color: #6b7280;
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+}
+
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: color 0.2s;
+}
+
+.search-button:hover {
+  color: var(--font);
+}
+
+/* Quick Access */
+.quick-access {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 60px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: left;
+  color: var(--font);
+}
+
+.quick-access-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+}
+
+.quick-access-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--searchbar);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--font);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.quick-access-item:hover {
+  background-color: var(--iconbg);
+  transform: translateY(-2px);
+}
+
+.quick-access-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.google {
+  background-color: #ffffff;
+}
+.youtube {
+  background-color: #ffffff;
+}
+.reddit {
+  background-color: #ffffff;
+}
+.discord {
+  background-color: #ffffff;
+}
+.github {
+  background-color: #ffffff;
+}
+.spotify {
+  background-color: #ffffff;
+}
+.twitter {
+  background-color: #ffffff;
+}
+
+.quick-access-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Partners */
+.partners {
+  width: 100%;
+  max-width: 800px;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  background-color: var(--searchbar);
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.partner-item {
+  aspect-ratio: 1;
+  background-color: var(--iconbg);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.partner-item:hover {
+  background-color: var(--secondary);
+}
+
+.partner-icon {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 4px;
+  position: relative;
+}
+
+.partner-icon::after {
+  content: "P";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* Top Right Logo */
+.top-right-logo {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-right-logo::after {
+  content: "P";
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Container for top-right date, time, and battery info */
+.top-right-info {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3); /* optional: semi-transparent background */
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #e8eaed;
+    z-index: 1000;
+}
+/* Container for bottom-right date, time, and battery info */
+.bottom-right-info {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 8px 12px;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.2); /* optional: semi-transparent background for appearance */
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #e8eaed;
+    z-index: 1000;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+/* Style for individual elements */
+#clock {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#date {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.battery-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+}
+
+#battery-icon {
+    font-size: 18px;
+}
+
+/* Dynamic battery color depending on percentage */
+.battery-low { color: #f87171; }      /* red */
+.battery-medium { color: #fbbf24; }   /* yellow */
+.battery-high { color: #34d399; }     /* green */

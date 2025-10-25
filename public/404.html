@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="debug()">Debug</button>
+    <button onclick="debugf()">Debug off</button>
+    <script>
+        function debug() {
+            localStorage.setItem("debug", "true");
+            alert("Debug mode enabled. Please refresh the page.");
+        }
+        function debugf() {
+            localStorage.removeItem("debug");
+            alert("Debug mode disabled. Please refresh the page.");
+        }
+        </script>
+</body>
+</html>

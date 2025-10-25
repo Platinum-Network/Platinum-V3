@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Centered P Logo</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+    }
+
+    .top-right-logo {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    }
+
+    .logo-icon {
+      /* make icon area slightly smaller than container */
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;                 /* IMPORTANT: center children */
+      align-items: center;           /* vertical center */
+      justify-content: center;       /* horizontal center */
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1;                /* prevents vertical misalignment */
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-right-logo">
+    <div class="logo-icon">P</div>
+  </div>
+</body>
+</html>

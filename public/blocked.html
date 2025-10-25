@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blocked - Platinum</title>
+  <meta name="description" content="Access to this site is blocked.">
+  <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/classroom/favicon.png" />
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="stylesheet" href="assets/css/themes.css">
+  
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: var(--font);
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 40px;
+      color: var(--font);
+    }
+
+    .retry-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .retry-btn:hover {
+      background-color: #5555ff;
+    }
+
+    #countdown {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <h1>Access Blocked</h1>
+  <p>Sorry, this site is blocked for violating policy. You may try again later.</p>
+  <button class="retry-btn" onclick="window.location.href='/'">Retry</button>
+<div id="countdown"></div>
+<script>
+const countdownEl = document.getElementById("countdown");
+
+// Use your getFingerprint function
+async function getFingerprint() {
+    function hash(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);}return(h>>>0).toString(16);}
+    function canvasFP(){const c=document.createElement('canvas');const ctx=c.getContext('2d');ctx.font='16px Arial';ctx.fillText('fp-demo',2,2);ctx.fillRect(50,10,100,20);return c.toDataURL();}
+    function webglFP(){const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl)return'';const dbg=gl.getExtension('WEBGL_debug_renderer_info');return[gl.getParameter(gl.VERSION),gl.getParameter(gl.VENDOR),gl.getParameter(gl.RENDERER),dbg?gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL):'',dbg?gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL):''].join('|');}
+    async function audioFP(){return new Promise(resolve=>{const AC=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!AC)return resolve('');const ctx=new AC(1,44100,44100);const osc=ctx.createOscillator();const anl=ctx.createAnalyser();osc.connect(anl);anl.connect(ctx.destination);osc.start(0);ctx.startRendering().then(buf=>resolve(buf.getChannelData(0).slice(0,1000).reduce((a,b)=>a+b,0).toString())).catch(()=>resolve(''));});}
+    function browserInfo(){return[navigator.userAgent,screen.width,screen.height,screen.colorDepth,Intl.DateTimeFormat().resolvedOptions().timeZone].join('|');}
+    const combined=[hash(canvasFP()),hash(webglFP()),hash(await audioFP()),hash(browserInfo())].join('|');
+    return hash(combined);
+}
+
+
+// Fetch remaining ban time from server
+async function updateServerCountdown() {
+  const key = "platinum_chances_" + await getFingerprint();
+    localStorage.setItem(key, "2");
+    const fingerprint = await getFingerprint();
+
+    try {
+        const res = await fetch('/api/ban-time', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fingerprint })
+        });
+        const data = await res.json();
+
+        if (data.remainingMinutes <= -2) {
+            countdownEl.textContent = "Ban expired. You can retry now.";
+            window.location.href = "/@"; // redirect to main page
+        } else {
+            countdownEl.textContent = `Try again in ${data.remainingMinutes} minute(s)`;
+        }
+    } catch (err) {
+        console.error('Failed to fetch remaining ban time:', err);
+        countdownEl.textContent = "Failed to fetch remaining ban time.";
+    }
+}
+
+// Update every 30 seconds
+updateServerCountdown();
+setInterval(updateServerCountdown, 30000);
+</script>
+
+</body>
+</html>
