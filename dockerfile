@@ -4,20 +4,18 @@ FROM node:22-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package files first for better caching
+# Copy dependency files
 COPY package.json pnpm-lock.yaml* ./
 
-# Install pnpm globally
-RUN npm install -g pnpm
-
-# Install dependencies
+# Enable and install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the app
+# Copy all project files
 COPY . .
 
-# Expose internal port 8110
+# Expose internal port (matches app.js -> 8110)
 EXPOSE 8110
 
-# Start the app
+# Start your app
 CMD ["pnpm", "start"]
