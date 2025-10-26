@@ -161,8 +161,8 @@ process.on("SIGTERM", shutdown);
 // ---------------------
 // Start server
 // ---------------------
-let port = parseInt(process.env.PORT || "8080");
-if (isNaN(port)) port = 8080;
+let port = parseInt(process.env.PORT || "8110");
+if (isNaN(port)) port = 8110;
 
 try {
     const address = await fastify.listen({ port, host: "0.0.0.0" });
