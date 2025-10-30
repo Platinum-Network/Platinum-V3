@@ -818,5 +818,20 @@
     "url": "https://g.deev.is/fnaw",
     "name": "Five Nights at Winston's",
     "image": "/assets/imgs/fnaw.png"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/6d68b33aa7d1267d71d5b6a63733dd367c2b7a19/basketrandom/index.html",
+    "name": "Basket Random",
+    "image": "/assets/imgs/basketrandom.png"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/6d68b33aa7d1267d71d5b6a63733dd367c2b7a19/soccerrandom/index.html",
+    "name": "Soccer Random",
+    "image": "/assets/imgs/soccerrandom.png"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/6d68b33aa7d1267d71d5b6a63733dd367c2b7a19/volleyrandom/index.html",
+    "name": "Volley Random",
+    "image": "/assets/imgs/volleyrandom.png"
   }
 ]

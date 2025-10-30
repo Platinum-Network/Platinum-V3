@@ -43,7 +43,7 @@ function run() {
 	const encodedUrl =
 		__uv$config.prefix +
 		__uv$config.encodeUrl(
-			"https://docs.google.com/forms/d/e/1FAIpQLSdw4IruO5-XKbmolNhrPpiuUXIiOyvF_UHHqiTfrkZcKBWpYA/viewform"
+			"hhttps://app.formbricks.com/s/cmh88mhp20wshad015c108lol"
 		);
 
 	localStorage.setItem("rurl", encodedUrl);

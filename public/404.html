@@ -1,22 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>404 - Page Not Found</title>
+  <link rel="icon" href="https://ssl.gstatic.com/classroom/favicon.png" />
+  <style>
+    /* === BASE === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--primary);
+      color: var(--font);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* === 404 CONTAINER === */
+    .error-container {
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .error-code {
+      font-size: 120px;
+      font-weight: 800;
+      color: var(--font);
+      text-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    .error-message {
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--font);
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+
+    .error-description {
+      font-size: 16px;
+      color: #d1d5db;
+      margin-bottom: 40px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      background-color: var(--accent);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.25s ease;
+    }
+
+    .back-btn:hover {
+      background-color: var(--iconbg);
+      transform: translateY(-2px);
+    }
+
+    /* subtle animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Optional floating logo (top right, consistent with your UI) */
+    .top-right-logo {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-right-logo::after {
+      content: "P";
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  </style>
+    <link rel="stylesheet" href="assets/css/themes.css">
 </head>
 <body>
-    <button onclick="debug()">Debug</button>
-    <button onclick="debugf()">Debug off</button>
-    <script>
-        function debug() {
-            localStorage.setItem("debug", "true");
-            alert("Debug mode enabled. Please refresh the page.");
-        }
-        function debugf() {
-            localStorage.removeItem("debug");
-            alert("Debug mode disabled. Please refresh the page.");
-        }
-        </script>
+  <div class="top-right-logo"></div>
+
+  <div class="error-container">
+    <div class="error-code">404</div>
+    <div class="error-message">Page Not Found</div>
+    <div class="error-description">
+      The page you’re looking for doesn’t exist or has been moved.
+    </div>
+    <a href="/" class="back-btn">Go Home</a>
+  </div>
+      <script src="/assets/js/themes.js" defer></script>
 </body>
 </html>
