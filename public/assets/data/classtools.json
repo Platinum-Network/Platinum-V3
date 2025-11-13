@@ -468,5 +468,25 @@
     "url": "http://primevideo.com",
     "name": "Prime Video",
     "image": "/assets/img/icons/prime.png"
+  },
+  {
+    "url": "https://www.disneyplus.com",
+    "name": "Disney Plus",
+    "image": "/assets/img/icons/disney.png"
+  },
+  {
+    "url": "https://www.tiktok.com",
+    "name": "Tiktok",
+    "image": "/assets/img/icons/tiktok.png"
+  },
+  {
+    "url": "https://www.bandlab.com/login",
+    "name": "BandLab",
+    "image": "/assets/img/icons/bandlab.png"
+  },
+  {
+    "url": "https://www.gauthmath.com",
+    "name": "Gauth Math",
+    "image": "/assets/img/icons/gauthmath.png"
   }
 ]

@@ -781,7 +781,7 @@
   },
   {
     "url": "https://www.easyfun.gg/cloud-games/roblox.html",
-    "name": "Roblox",
+    "name": "Roblox (Real)",
     "image": "/assets/imgs/roblox.png"
   },
   {
@@ -838,5 +838,15 @@
     "url": "https://retrogamesfree.com/marvel-vs-capcom-clash-of-super-heroes-980123-euro.embed",
     "name": "Marvel vs. Capcom",
     "image": "/assets/imgs/pv3.webp"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/bc04fbca4991251a75264a4336b77d3662a9313e/ragdoll-hit/index.html",
+    "name": "Ragdoll Hit",
+    "image": "/assets/imgs/ragdollhit.png"
+  },
+  {
+    "url": "https://slowroads.io/",
+    "name": "slowroads.io",
+    "image": "/assets/imgs/slowroads.png"
   }
 ]

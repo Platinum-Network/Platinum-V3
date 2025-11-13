@@ -17,7 +17,6 @@
     .main-content {
       flex: 1;
       padding: 2rem;
-      margin-left: 160px; /* Account for sidebar width */
       background-color: var(--primary);
     }
 
