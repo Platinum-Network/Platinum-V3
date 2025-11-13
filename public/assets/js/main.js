@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		logHistory(encodedUrl);
 		safeStore("url", encodedUrl);
 		sessionStorage.setItem("Url", encodedUrl);
-		window.location.href = "/quiz";
+		window.location.href = encodedUrl;
 	}
 
 	async function ecEncode(url) {
@@ -177,14 +177,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		logHistory(url);
 		safeStore("url", encodedUrl);
 		sessionStorage.setItem("Url", encodedUrl);
-		window.location.href = "/quiz";
+		window.location.href = encodedUrl;
 	}
 
 	async function sjEncode(url) {
 		const encodedUrl = "/scram/service/" + encodeURIComponent(url);
 		logHistory(url);
 		safeStore("url", encodedUrl);
-		window.location.href = "/quiz";
+		window.location.href = encodedUrl;
 	}
 
 	// === Decode button listeners ===

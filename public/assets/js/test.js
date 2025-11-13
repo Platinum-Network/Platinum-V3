@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const form = document.getElementById("form");
-	const input = document.getElementById("indexInput");
-	const input2 = document.getElementById("input2");
+	const input = document.getElementById("input");
 
 	let blockedTermsCache = null;
 	let baremuxConnection = null;
@@ -139,23 +138,34 @@ document.addEventListener("DOMContentLoaded", () => {
 	window.sjDecodeUrl = sjDecodeUrl;
 
 	// === Encode functions (DO NOT TOUCH) ===
-	function logHistory(url) {
-		if (localStorage.getItem("proxy") === "uv") {
-			const decodedUrl = __uv$config.decodeUrl(url);
-			safeStore("history", decodedUrl);
-			return decodedUrl;
-		} else if (localStorage.getItem("proxy") === "sj") {
-			const decodedUrl = decodeURIComponent(url);
-			safeStore("history", decodedUrl);
-			return decodedUrl;
-		} else if (localStorage.getItem("proxy") === "ec") {
-			const decodedUrl = __eclipse$config.codec.encode(url);
-			safeStore("history", decodedUrl);
-			return decodedUrl;
-		}
-		safeStore("history", url);
-		return url;
-	}
+// Run the code indefinitely at regular intervals (e.g., every 1000ms = 1 second)
+// Start the interval to run the logic every 1000ms (1 second)
+setInterval(function() {
+    // Get the current URL (assuming you need the current page URL)
+    let url = window.location.href; // or replace with your method to get the URL
+
+    // Check the proxy condition and handle the URL accordingly
+    if (localStorage.getItem("proxy") === "uv") {
+        const decodedUrl = __uv$config.decodeUrl(url);
+        console.log(decodedUrl); // Log decoded URL for debugging
+        input.innerText = decodedUrl; // Set decoded URL into the input element
+    } else if (localStorage.getItem("proxy") === "sj") {
+        const decodedUrl = decodeURIComponent(url);
+        console.log(decodedUrl);
+        input.innerText = decodedUrl;
+    } else if (localStorage.getItem("proxy") === "ec") {
+        const decodedUrl = __eclipse$config.codec.encode(url);
+        console.log(decodedUrl);
+        input.innerText = decodedUrl;
+    } else {
+        // Default case if no matching proxy condition
+        safeStore("history", url); // Store the history
+        console.log(url); // Log the URL for debugging
+        input.innerText = url; // Set the raw URL into the input element
+    }
+}, 1000); // Run every 1000 milliseconds (1 second)
+
+
 
 	async function rhEncode(url) {
 		const encodedUrl = await RammerheadEncode(url);
@@ -169,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		logHistory(encodedUrl);
 		safeStore("url", encodedUrl);
 		sessionStorage.setItem("Url", encodedUrl);
-		createTab(encodedUrl);
+		window.location.href = "/test";
 	}
 
 	async function ecEncode(url) {
@@ -177,34 +187,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		logHistory(url);
 		safeStore("url", encodedUrl);
 		sessionStorage.setItem("Url", encodedUrl);
-		createTab(encodedUrl);
+		window.location.href = "/test";
 	}
 
 	async function sjEncode(url) {
 		const encodedUrl = "/scram/service/" + encodeURIComponent(url);
 		logHistory(url);
 		safeStore("url", encodedUrl);
-        createTab(encodedUrl);
-	}
-
-	// === Decode button listeners ===
-	const uvDecodeButton = document.getElementById("uvDecodeButton");
-	const sjDecodeButton = document.getElementById("sjDecodeButton");
-	const uvDecode = document.getElementById("uvDecode");
-	const sjDecode = document.getElementById("sjDecode");
-
-	if (uvDecodeButton && uvDecode) {
-		uvDecodeButton.addEventListener("click", () => {
-			if (!uvDecode.value.trim()) return alert("Please enter a URL to decode.");
-			uvDecode.value = uvDecodeUrl(uvDecode.value);
-		});
-	}
-
-	if (sjDecodeButton && sjDecode) {
-		sjDecodeButton.addEventListener("click", () => {
-			if (!sjDecode.value.trim()) return alert("Please enter a URL to decode.");
-			sjDecode.value = sjDecodeUrl(sjDecode.value);
-		});
+		window.location.href = "/test";
 	}
 
 	// === Main form handler ===

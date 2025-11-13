@@ -68,5 +68,5 @@ function run(url) {
   const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
   localStorage.setItem("url", encodedUrl);
   sessionStorage.setItem("Url", encodedUrl);
-  window.location.href = "/quiz";
+  window.location.href = encodedUrl;
 }

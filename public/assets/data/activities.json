@@ -833,5 +833,10 @@
     "url": "https://rawcdn.githack.com/thefluxion/CDN/6d68b33aa7d1267d71d5b6a63733dd367c2b7a19/volleyrandom/index.html",
     "name": "Volley Random",
     "image": "/assets/imgs/volleyrandom.png"
+  },
+  {
+    "url": "https://retrogamesfree.com/marvel-vs-capcom-clash-of-super-heroes-980123-euro.embed",
+    "name": "Marvel vs. Capcom",
+    "image": "/assets/imgs/pv3.webp"
   }
 ]

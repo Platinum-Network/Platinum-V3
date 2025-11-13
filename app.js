@@ -5,7 +5,7 @@ import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { join } from "node:path";
 import { hostname } from "node:os";
-import { server as wisp } from "@mercuryworkshop/wisp-js/server";
+import { server as wisp, logging } from "@mercuryworkshop/wisp-js/server";
 import { createServer } from "node:http";
 
 const __dirname = process.cwd();
@@ -65,6 +65,7 @@ const pages = [
     { path: "/tool", file: "tools.html" },
     { path: "/blocked", file: "blocked.html" },
     { path: "/bug", file: "report.html" },
+    { path: "/watch", file: "watch.html" },
 ];
 
 pages.forEach(page => {
@@ -145,6 +146,22 @@ fastify.post('/api/ban', async (request, reply) => {
 
     return reply.send({ success: true, bannedUntil: bans[fingerprint].bannedUntil });
 });
+
+// ---------------------
+// DuckDuckGo search suggestions
+// ---------------------
+fastify.get('/results/:query', async (request, reply) => {
+    const { query } = request.params;
+
+    try {
+        const response = await fetch(`http://api.duckduckgo.com/ac?q=${query}&format=json`);
+        const data = await response.json();
+        reply.send(data);
+    } catch (err) {
+        reply.status(500).send({ error: 'Failed to fetch results' });
+    }
+});
+
 
 // ---------------------
 // Graceful shutdown
