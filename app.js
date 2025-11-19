@@ -1,75 +1,148 @@
+import { createServer } from "node:http";
+import { fileURLToPath } from "url";
+import { hostname } from "node:os";
+import { server as blockwisp, logging } from "@mercuryworkshop/wisp-js/server";
+import { server as wisp} from "@mercuryworkshop/wisp-js/server";
 import Fastify from "fastify";
 import fastifyStatic from "@fastify/static";
+import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
-import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
-import { join } from "node:path";
-import { hostname } from "node:os";
-import { server as wisp, logging } from "@mercuryworkshop/wisp-js/server";
-import { createServer } from "node:http";
 
-const __dirname = process.cwd();
-const publicPath = join(__dirname, "public");
+// ---------------------
+// Paths
+// ---------------------
+const publicPath = fileURLToPath(new URL("public/", import.meta.url));
 
-// Create Fastify instance with COOP/COEP headers and WebSocket upgrade handling
+
+// ---------------------
+// Wisp Configuration
+// ---------------------
+logging.set_level(logging.NONE);
+Object.assign(wisp.options, {
+  allow_udp_streams: false,
+  hostname_blacklist: [
+    /pornhub\.com/i,
+    /xvideos\.com/i,
+    /redtube\.com/i,
+    /youporn\.com/i,
+    /xhamster\.com/i,
+    /xnxx\.com/i,
+    /spankbang\.com/i,
+    /tube8\.com/i,
+    /tnaflix\.com/i,
+    /porndig\.com/i,
+    /efukt\.com/i,
+    /empflix\.com/i,
+    /javhub\.com/i,
+    /faproulette\.com/i,
+    /sex\.com/i,
+    /cam4\.com/i,
+    /chaturbate\.com/i,
+    /livejasmin\.com/i,
+    /onlyfans\.com/i,
+    /fansly\.com/i,
+    /manyvids\.com/i,
+    /clips4sale\.com/i
+  ],
+  dns_servers: ["1.1.1.1", "8.8.8.8"], // AdGuard DNS
+});
+
+logging.set_level(logging.NONE);
+Object.assign(blockwisp.options, {
+  allow_udp_streams: false,
+  hostname_blacklist: [
+    /pornhub\.com/i,
+    /xvideos\.com/i,
+    /redtube\.com/i,
+    /youporn\.com/i,
+    /xhamster\.com/i,
+    /xnxx\.com/i,
+    /spankbang\.com/i,
+    /tube8\.com/i,
+    /tnaflix\.com/i,
+    /porndig\.com/i,
+    /efukt\.com/i,
+    /empflix\.com/i,
+    /javhub\.com/i,
+    /faproulette\.com/i,
+    /sex\.com/i,
+    /cam4\.com/i,
+    /chaturbate\.com/i,
+    /livejasmin\.com/i,
+    /onlyfans\.com/i,
+    /fansly\.com/i,
+    /manyvids\.com/i,
+    /clips4sale\.com/i
+  ],
+  dns_servers: ["94.140.14.14", "94.140.15.15"], // AdGuard DNS
+});
+
+
+// ---------------------
+// Fastify setup
+// ---------------------
 const fastify = Fastify({
-    logger: true,
-    serverFactory: (handler) => {
-        const server = createServer((req, res) => {
-            res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-            res.setHeader("Cross-Origin-Embedder-Policy", "anonymous");
-            handler(req, res);
-        });
-
-        // Handle WebSocket upgrades for Wisp
-        server.on("upgrade", (req, socket, head) => {
-            wisp.routeRequest(req, socket, head);
-        });
-
-        return server;
-    }
+	serverFactory: (handler) => {
+		return createServer()
+			.on("request", (req, res) => {
+				handler(req, res);
+			})
+			.on("upgrade", (req, socket, head) => {
+				if (req.url.endsWith("/wisp/")) wisp.routeRequest(req, socket, head);
+                else if (req.url.startsWith("/blockwisp/")) blockwisp.routeRequest(req, socket, head);
+				else socket.end();
+			});
+	},
 });
 
 // ---------------------
-// Static file routes
+// Static files
 // ---------------------
-
-// Public files
-await fastify.register(fastifyStatic, { root: publicPath, prefix: "/" });
-
-// Transport libraries
-await fastify.register(fastifyStatic, { root: epoxyPath, prefix: "/epoxy/", decorateReply: false });
-await fastify.register(fastifyStatic, { 
-    root: libcurlPath, 
-    prefix: "/libcurl/", 
-    decorateReply: false,
-    setHeaders: (res, path) => {
-        if (path.endsWith(".mjs")) res.setHeader("Content-Type", "application/javascript");
-    }
+fastify.register(fastifyStatic, {
+	root: publicPath,
+	decorateReply: true,
 });
-await fastify.register(fastifyStatic, { root: baremuxPath, prefix: "/baremux/", decorateReply: false });
+
+fastify.register(fastifyStatic, {
+  root: scramjetPath,
+  prefix: "/scram/",
+  decorateReply: false,
+});
+
+fastify.register(fastifyStatic, {
+	root: epoxyPath,
+	prefix: "/epoxy/",
+	decorateReply: false,
+});
+
+fastify.register(fastifyStatic, {
+	root: baremuxPath,
+	prefix: "/baremux/",
+	decorateReply: false,
+});
 
 // ---------------------
 // HTML page routes
 // ---------------------
 const pages = [
-    { path: "/", file: "rindex.html" },
-    { path: "/@", file: "rindex.html" },
-    { path: "/lessons", file: "games.html" },
-    { path: "/tools", file: "apps.html" },
-    { path: "/quiz", file: "tabs.html" },
-    { path: "/settings", file: "settings.html" },
-    { path: "/test", file: "browser.html" },
-    { path: "/search", file: "search.html" },
-    { path: "/helper", file: "ai.html" },
-    { path: "/tool", file: "tools.html" },
-    { path: "/blocked", file: "blocked.html" },
-    { path: "/bug", file: "report.html" },
-    { path: "/watch", file: "watch.html" },
+  { path: "/", file: "/math/index.html" },
+  { path: "/@", file: "rindex.html" },
+  { path: "/lessons", file: "games.html" },
+  { path: "/tools", file: "apps.html" },
+  { path: "/quiz", file: "tabs.html" },
+  { path: "/settings", file: "settings.html" },
+  { path: "/test", file: "browser.html" },
+  { path: "/search", file: "search.html" },
+  { path: "/helper", file: "ai.html" },
+  { path: "/tool", file: "tools.html" },
+  { path: "/blocked", file: "blocked.html" },
+  { path: "/bug", file: "report.html" },
+  { path: "/watch", file: "watch.html" },
 ];
 
-pages.forEach(page => {
-    fastify.get(page.path, (req, reply) => reply.sendFile(page.file));
+pages.forEach((page) => {
+  fastify.get(page.path, (req, reply) => reply.sendFile(page.file));
 });
 
 // 404 fallback
@@ -78,115 +151,86 @@ fastify.setNotFoundHandler((req, reply) => reply.sendFile("404.html"));
 // ---------------------
 // In-memory ban store
 // ---------------------
-const bans = {}; // { fingerprint: { bannedUntil: Date } }
-const BAN_DURATION_MS = 45 * 60 * 1000; // 45 minutes
+const bans = {};
+const BAN_DURATION_MS = 45 * 60 * 1000; // 45 min
 
 // ---------------------
 // API endpoints
 // ---------------------
-
-// Check if a fingerprint is banned
-fastify.post('/api/check-ban', async (request, reply) => {
-    const { fingerprint } = request.body;
-    if (!fingerprint) return reply.code(400).send({ error: 'No fingerprint provided' });
-
-    const ban = bans[fingerprint];
-    if (ban && new Date() < new Date(ban.bannedUntil)) {
-        return reply.send({ banned: true });
-    } else {
-        return reply.send({ banned: false });
-    }
+fastify.post("/api/check-ban", async (req, reply) => {
+  const { fingerprint } = req.body;
+  if (!fingerprint) return reply.code(400).send({ error: "No fingerprint" });
+  const ban = bans[fingerprint];
+  return reply.send({ banned: ban && new Date() < new Date(ban.bannedUntil) });
 });
 
-// Get remaining ban time for a fingerprint
-fastify.post('/api/ban-time', async (request, reply) => {
-  const { fingerprint } = request.body;
-  if (!fingerprint) return reply.code(400).send({ error: 'No fingerprint provided' });
-
+fastify.post("/api/ban-time", async (req, reply) => {
+  const { fingerprint } = req.body;
+  if (!fingerprint) return reply.code(400).send({ error: "No fingerprint" });
   const ban = bans[fingerprint];
   if (!ban) return reply.send({ remainingMinutes: 0 });
-
-  const now = new Date();
-  const remainingMs = new Date(ban.bannedUntil) - now;
-  const remainingMinutes = remainingMs > 0 ? Math.ceil(remainingMs / 60000) : 0;
-
-  return reply.send({ remainingMinutes });
+  const remaining = Math.ceil((new Date(ban.bannedUntil) - new Date()) / 60000);
+  return reply.send({ remainingMinutes: remaining > 0 ? remaining : 0 });
 });
 
+fastify.post("/api/ban", async (req, reply) => {
+  const { fingerprint } = req.body;
+  if (!fingerprint) return reply.code(400).send({ error: "No fingerprint" });
+  bans[fingerprint] = { bannedUntil: new Date(Date.now() + BAN_DURATION_MS) };
+  return reply.send({ success: true, bannedUntil: bans[fingerprint].bannedUntil });
+});
 
-// In your existing Fastify server code
-fastify.post('/api/unban', async (request, reply) => {
-  const { fingerprint, password } = request.body;
-
-  if (!fingerprint || !password) {
-    return reply.status(400).send({ success: false, error: 'Missing parameters' });
-  }
-
-  if (password !== 'Car0613!') {
-    return reply.status(401).send({ success: false, error: 'Incorrect password' });
-  }
-
-  // Remove user from banned list
-  if (bans[fingerprint]) {
-    delete bans[fingerprint];
-  }
-
+fastify.post("/api/unban", async (req, reply) => {
+  const { fingerprint, password } = req.body;
+  if (!fingerprint || !password) return reply.status(400).send({ success: false, error: "Missing parameters" });
+  if (password !== "Car0613!") return reply.status(401).send({ success: false, error: "Incorrect password" });
+  if (bans[fingerprint]) delete bans[fingerprint];
   return reply.send({ success: true });
 });
 
-
-
-// Ban a fingerprint
-fastify.post('/api/ban', async (request, reply) => {
-    const { fingerprint } = request.body;
-    if (!fingerprint) return reply.code(400).send({ error: 'No fingerprint provided' });
-
-    const now = new Date();
-    bans[fingerprint] = { bannedUntil: new Date(now.getTime() + BAN_DURATION_MS) };
-
-    return reply.send({ success: true, bannedUntil: bans[fingerprint].bannedUntil });
+// DuckDuckGo suggestions
+fastify.get("/results/:query", async (req, reply) => {
+  try {
+    const response = await fetch(`https://api.duckduckgo.com/ac?q=${encodeURIComponent(req.params.query)}&format=json`);
+    const data = await response.json();
+    reply.send(data);
+  } catch {
+    reply.status(500).send({ error: "Failed to fetch results" });
+  }
 });
 
 // ---------------------
-// DuckDuckGo search suggestions
+// Server startup
 // ---------------------
-fastify.get('/results/:query', async (request, reply) => {
-    const { query } = request.params;
+fastify.server.on("listening", () => {
+	const address = fastify.server.address();
 
-    try {
-        const response = await fetch(`http://api.duckduckgo.com/ac?q=${query}&format=json`);
-        const data = await response.json();
-        reply.send(data);
-    } catch (err) {
-        reply.status(500).send({ error: 'Failed to fetch results' });
-    }
+	// by default we are listening on 0.0.0.0 (every interface)
+	// we just need to list a few
+	console.log("Listening on:");
+	console.log(`\thttp://localhost:${address.port}`);
+	console.log(`\thttp://${hostname()}:${address.port}`);
+	console.log(
+		`\thttp://${
+			address.family === "IPv6" ? `[${address.address}]` : address.address
+		}:${address.port}`
+	);
 });
-
-
-// ---------------------
-// Graceful shutdown
-// ---------------------
-function shutdown() {
-    console.log("SIGTERM signal received: closing HTTP server");
-    fastify.close();
-    process.exit(0);
-}
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-// ---------------------
-// Start server
-// ---------------------
-let port = parseInt(process.env.PORT || "8110");
-if (isNaN(port)) port = 8110;
-
-try {
-    const address = await fastify.listen({ port, host: "0.0.0.0" });
-    console.log(`Server listening on:`);
-    console.log(`\thttp://localhost:${port}`);
-    console.log(`\thttp://${hostname()}:${port}`);
-} catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
+function shutdown() {
+	console.log("SIGTERM signal received: closing HTTP server");
+	fastify.close();
+	process.exit(0);
 }
+
+let port = parseInt(process.env.PORT || "");
+
+if (isNaN(port)) port = 8080;
+
+fastify.listen({
+	port: port,
+	host: "0.0.0.0",
+});

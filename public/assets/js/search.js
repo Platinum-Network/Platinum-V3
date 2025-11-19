@@ -2,8 +2,17 @@ document.addEventListener("DOMContentLoaded", () => {
 	const form = document.getElementById("form");
 	const input = document.getElementById("indexInput");
 	const input2 = document.getElementById("input2");
+	const { ScramjetController } = $scramjetLoadController();
+	const scramjet = new ScramjetController({
+		files: {
+			wasm: '/scram/scramjet.wasm.wasm',
+			all: '/scram/scramjet.all.js',
+			sync: '/scram/scramjet.sync.js',
+		},
+	});
 
-	let blockedTermsCache = null;
+	scramjet.init();
+
 	let baremuxConnection = null;
 
 	// === Helper: async-safe localStorage write ===
@@ -181,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	async function sjEncode(url) {
-		const encodedUrl = "/scram/service/" + encodeURIComponent(url);
+		const encodedUrl = scramjet.encodeUrl(url);
 		logHistory(url);
 		safeStore("url", encodedUrl);
         createTab(encodedUrl);
@@ -208,67 +217,61 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	// === Main form handler ===
-	if (form && input) {
-		form.addEventListener("submit", async (event) => {
-			event.preventDefault();
+if (form && input) {
+	form.addEventListener("submit", async (event) => {
+		event.preventDefault();
 
-			let blocked = await getBlockedTerms();
-			let url = input.value.toLowerCase().trim();
-			const fingerprint = await getFingerprint();
+		let url = input.value.trim();
 
-			// --- Check blocked terms ---
-			if (blocked.some(term => url.includes(term))) {
-				if (await handleBlockedUrl(fingerprint)) return;
-			}
-
-			// --- Search engine fallback ---
-			if (!isUrl(url)) {
-				const engine = localStorage.getItem("searchEngine") || "duckduckgo";
-				switch (engine) {
-					case "google":
-						url = "https://www.google.com/search?q=" + url;
-						break;
-					case "duckduckgo":
-						url = "https://duckduckgo.com/?t=h_&q=" + url;
-						break;
-					case "bing":
-						url = "https://www.bing.com/search?q=" + url;
-						break;
-					case "yahoo":
-						url = "https://search.yahoo.com/search?p=" + url;
-						break;
-					case "ecosia":
-						url = "https://www.ecosia.org/search?q=" + url;
-						break;
-					case "irs":
-						url = "https://www.irs.gov/site-index-search?search=" + url;
-						break;
-					default:
-						url = "https://www.google.com/search?q=" + url;
-						break;
-				}
-			} else if (!url.startsWith("https://") && !url.startsWith("http://")) {
-				url = `https://${url}`;
-			}
-
-			// --- Pass to your existing encoding logic ---
-			const proxy = localStorage.getItem("proxy") || "uv";
-			switch (proxy) {
-				case "uv":
-					await uvEncode(url);
+		// --- Search engine fallback ---
+		if (!isUrl(url)) {
+			const engine = localStorage.getItem("searchEngine") || "duckduckgo";
+			switch (engine) {
+				case "google":
+					url = "https://www.google.com/search?q=" + url;
 					break;
-				case "sj":
-					await sjEncode(url);
+				case "duckduckgo":
+					url = "https://duckduckgo.com/?t=h_&q=" + url;
 					break;
-				case "ec":
-					await ecEncode(url);
+				case "bing":
+					url = "https://www.bing.com/search?q=" + url;
 					break;
-				case "rh":
-					await rhEncode(url);
+				case "yahoo":
+					url = "https://search.yahoo.com/search?p=" + url;
+					break;
+				case "ecosia":
+					url = "https://www.ecosia.org/search?q=" + url;
+					break;
+				case "irs":
+					url = "https://www.irs.gov/site-index-search?search=" + url;
+					break;
+				default:
+					url = "https://www.google.com/search?q=" + url;
 					break;
 			}
-		});
-	}
+		} else if (!url.startsWith("https://") && !url.startsWith("http://")) {
+			url = `https://${url}`;
+		}
+
+		// --- Existing encoding logic ---
+		const proxy = localStorage.getItem("proxy") || "uv";
+		switch (proxy) {
+			case "uv":
+				await uvEncode(url);
+				break;
+			case "sj":
+				await sjEncode(url);
+				break;
+			case "ec":
+				await ecEncode(url);
+				break;
+			case "rh":
+				await rhEncode(url);
+				break;
+		}
+	});
+}
+
 
 	// === Load last history placeholder ===
 	const lastDecodedUrl = localStorage.getItem("history");

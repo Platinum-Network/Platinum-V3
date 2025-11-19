@@ -12,7 +12,10 @@ importScripts("ec/eclipse.codecs.js");
 importScripts("ec/eclipse.config.js");
 importScripts("ec/eclipse.rewrite.js");
 importScripts("ec/eclipse.worker.js");
+importScripts('/scram/scramjet.all.js');
 
+const { ScramjetServiceWorker } = $scramjetLoadWorker();
+const scramjet = new ScramjetServiceWorker();
 const uv = new UVServiceWorker();
 const eclipse = new EclipseServiceWorker();
 
@@ -25,6 +28,11 @@ self.addEventListener("message", ({ data }) => {
 });
 
 async function handleRequest(event) {
+    await scramjet.loadConfig();
+    if (scramjet.route(event)) {
+        return scramjet.fetch(event);
+    }
+
     if (uv.route(event)) {
         return await uv.fetch(event);
     }

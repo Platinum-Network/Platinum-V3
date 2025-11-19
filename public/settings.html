@@ -1,215 +1,657 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta property="og:title" content="Platinum" />
-<meta property="og:url" content="https://platinumunblocker.com/" />
-<meta property="og:image" content="/assets/img/embed.png" />
-<meta property="og:description" content="One of the fastest unblockers out there!" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Settings</title>
-<link rel="stylesheet" href="assets/css/themes.css" />
-<link rel="stylesheet" href="assets/css/topbar.css" />
-<link rel="stylesheet" href="assets/css/settings.css" />
-<script src="/assets/js/settings.js"></script>
-<script src="/assets/js/themes.js"></script>
+<link rel="stylesheet" href="/assets/css/themes.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--font);
+  min-height: 100vh;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 2rem;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  width: 280px;
+  background-color: var(--sidebar-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: var(--font);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--font);
+}
+
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--font);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.section {
+  display: none;
+  animation: fadeIn 0.3s;
+}
+
+.section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-card {
+  background: var(--secondary);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.section-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--font);
+}
+
+.section-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  color: var(--font);
+}
+
+.section-card h3:first-of-type {
+  margin-top: 0;
+}
+
+.section-card p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Form Controls */
+.form-group {
+  margin: 1.5rem 0;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--searchbar);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--font);
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Toggle Switch */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.toggle {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  background: var(--iconbg);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle input {
+  display: none;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggle input:checked + .toggle {
+  background: var(--accent);
+}
+
+.toggle input:checked + .toggle .toggle-slider {
+  transform: translateX(22px);
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-right: 0.75rem;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.warning-text {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* Link Styling */
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+  }
+}
+</style>
 </head>
 <body>
-      <div id="particles-js"></div>
-    <script type="text/javascript" src="/assets/particles/particles.js"></script>
-    <script type="text/javascript" src="/assets/particles/app.js"></script>
-<div class="layout-container">
+
+<div id="particles-js"></div>
+
+<div class="container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <h1>Settings</h1>
+    <nav>
+      <div class="nav-item active" data-section="cloaking">
+        <svg class="nav-icon" viewBox="0 -960 960 960"><path d="m828-245-75-75h47v-400H353L245-828q8-24 28.5-38t46.5-14h480q33 0 56.5 23.5T880-800v480q0 26-14 46.5T828-245Zm-8 217L608-240H320q-33 0-56.5-23.5T240-320v-288L28-820l56-56L876-84l-56 56ZM320-320h208L320-528v208ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm265-343Zm114-111Z"/></svg>
+        <span>Cloaking</span>
+      </div>
+      <div class="nav-item" data-section="themes">
+        <svg class="nav-icon" viewBox="0 -960 960 960"><path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/></svg>
+        <span>Themes</span>
+      </div>
+      <div class="nav-item" data-section="performance">
+        <svg class="nav-icon" viewBox="0 -960 960 960"><path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/></svg>
+        <span>Performance</span>
+      </div>
+      <div class="nav-item" data-section="proxy">
+        <svg class="nav-icon" viewBox="0 -960 960 960"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>
+        <span>Proxy & Browser</span>
+      </div>
+      <div class="nav-item" data-section="save">
+        <svg class="nav-icon" viewBox="0 -960 960 960"><path d="M240-40q-33 0-56.5-23.5T160-120v-440q0-33 23.5-56.5T240-640h120v80H240v440h480v-440H600v-80h120q33 0 56.5 23.5T800-560v440q0 33-23.5 56.5T720-40H240Zm200-280v-447l-64 64-56-57 160-160 160 160-56 57-64-64v447h-80Z"/></svg>
+        <span>Import/Export</span>
+      </div>
+      <div class="nav-item" data-section="statistics">
+        <svg class="nav-icon" viewBox="0 -960 960 960"><path d="m226-559 78 33q14-28 29-54t33-52l-56-11-84 84Zm142 83 114 113q42-16 90-49t90-75q70-70 109.5-155.5T806-800q-72-5-158 34.5T492-656q-42 42-75 90t-49 90Zm178-65q-23-23-23-56.5t23-56.5q23-23 57-23t57 23q23 23 23 56.5T660-541q-23 23-57 23t-57-23Zm19 321 84-84-11-56q-26 18-52 32.5T532-299l33 79Zm313-653q19 121-23.5 235.5T708-419l20 99q4 20-2 39t-20 33L538-80l-84-197-171-171-197-84 167-168q14-14 33.5-20t39.5-2l99 20q104-104 218-147t235-24ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-25 25-83.5 43T82-76q14-103 32-161.5t43-83.5Zm57 56q-10 10-20 36.5T180-175q27-4 53.5-13.5T270-208q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z"/></svg>
+        <span>About & Statistics</span>
+      </div>
+    </nav>
+  </aside>
 
   <!-- Main Content Area -->
-  <div class="main-content">
-    <div class="settings-container">
-      <div class="settingsbar">
-        <h2>Settings</h2>
-        <!-- Menu Items -->
-        <div class="menu-item active" data-section="cloaking">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="m828-245-75-75h47v-400H353L245-828q8-24 28.5-38t46.5-14h480q33 0 56.5 23.5T880-800v480q0 26-14 46.5T828-245Zm-8 217L608-240H320q-33 0-56.5-23.5T240-320v-288L28-820l56-56L876-84l-56 56ZM320-320h208L320-528v208ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm265-343Zm114-111Z"/>
-          </svg>
-          Cloaking
-        </div>
-        <div class="menu-item" data-section="themes">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
-          </svg>
-          Themes
-        </div>
-        <div class="menu-item" data-section="performance">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="M418-340q24 24 62 23.5t56-27.5l224-336-336 224q-27 18-28.5 55t22.5 61Zm62-460q59 0 113.5 16.5T696-734l-76 48q-33-17-68.5-25.5T480-720q-133 0-226.5 93.5T160-400q0 42 11.5 83t32.5 77h552q23-38 33.5-79t10.5-85q0-36-8.5-70T766-540l48-76q30 47 47.5 100T880-406q1 57-13 109t-41 99q-11 18-30 28t-40 10H204q-21 0-40-10t-30-28q-26-45-40-95.5T80-400q0-83 31.5-155.5t86-127Q252-737 325-768.5T480-800Zm7 313Z"/>
-          </svg>
-          Performance
-        </div>
-        <div class="menu-item" data-section="proxy">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/>
-          </svg>
-          Proxy & Browser
-        </div>
-        <div class="menu-item" data-section="save">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="M240-40q-33 0-56.5-23.5T160-120v-440q0-33 23.5-56.5T240-640h120v80H240v440h480v-440H600v-80h120q33 0 56.5 23.5T800-560v440q0 33-23.5 56.5T720-40H240Zm200-280v-447l-64 64-56-57 160-160 160 160-56 57-64-64v447h-80Z"/>
-          </svg>
-          Import/Export
-        </div>
-        <div class="divider"></div>
-        <div class="menu-item" data-section="statistics">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="m226-559 78 33q14-28 29-54t33-52l-56-11-84 84Zm142 83 114 113q42-16 90-49t90-75q70-70 109.5-155.5T806-800q-72-5-158 34.5T492-656q-42 42-75 90t-49 90Zm178-65q-23-23-23-56.5t23-56.5q23-23 57-23t57 23q23 23 23 56.5T660-541q-23 23-57 23t-57-23Zm19 321 84-84-11-56q-26 18-52 32.5T532-299l33 79Zm313-653q19 121-23.5 235.5T708-419l20 99q4 20-2 39t-20 33L538-80l-84-197-171-171-197-84 167-168q14-14 33.5-20t39.5-2l99 20q104-104 218-147t235-24ZM157-321q35-35 85.5-35.5T328-322q35 35 34.5 85.5T327-151q-25 25-83.5 43T82-76q14-103 32-161.5t43-83.5Zm57 56q-10 10-20 36.5T180-175q27-4 53.5-13.5T270-208q12-12 13-29t-11-29q-12-12-29-11.5T214-265Z"/>
-          </svg>
-          About & Statistics
+  <main class="main-content">
+    
+    <!-- Cloaking Section -->
+    <section id="cloaking" class="section active">
+      <div class="section-card">
+        <h2>About:Blank Cloaking</h2>
+        <p>Cloak the site in an about:blank page to hide it from view.</p>
+        <div class="toggle-wrapper">
+          <label class="toggle">
+            <input type="checkbox" id="ab-toggle">
+            <div class="toggle">
+              <div class="toggle-slider"></div>
+            </div>
+          </label>
         </div>
       </div>
 
-      <!-- Content Sections -->
-      <div class="content">
-        <!-- Cloaking Section -->
-        <div class="content-section active" id="cloaking">
-          <h2>About:Blank</h2>
-          <p>Cloak the site in an about:blank page.</p>
-          <label class="switch">
-            <input type="checkbox" id="ab-checkbox" />
-            <span class="slider round"></span>
+      <div class="section-card">
+        <h2>Clickoff Cloak</h2>
+        <p>Automatically change the tab title and icon to Google Docs when you switch to another tab.</p>
+        <div class="toggle-wrapper">
+          <label class="toggle">
+            <input type="checkbox" id="clickoff-toggle">
+            <div class="toggle">
+              <div class="toggle-slider"></div>
+            </div>
           </label>
-          <h2>Clickoff Cloak</h2>
-          <p>Cloak the site title and icon to Google Docs when you are on another tab</p>
-          <label class="switch">
-            <input type="checkbox" id="clickoff-checkbox" />
-            <span class="slider round"></span>
-          </label>
-          <div class="spacing"></div>
-          <h2>Tab Title</h2>
-          <p>Change the tab title.</p>
-          <input type="text" placeholder="Enter a title" id="tab-title" />
-          <div class="spacing"></div>
-          <h2>Tab Icon</h2>
-          <p>Change the tab icon.</p>
-          <input type="text" placeholder="Enter a icon URL" id="tab-icon" />
-          <div class="spacing"></div>
-          <h2>Panic Key</h2>
-          <p>Set a panic key.</p>
-          <input type="text" id="panicKeyInput" maxlength="20" />
         </div>
+      </div>
 
-        <!-- Themes -->
-        <div class="content-section" id="themes">
-          <h2>Themes</h2>
-          <h3>Default Themes</h3>
-          <p>Choose from the following themes for your experience:</p>
-          <select class="theme-select" id="theme-select">
-            <option value="default">Default</option>
-            <option value="ocean">Slate</option>
-            <option value="teal">teal</option>
-            <option value="slate">Ocean</option>
-          </select>
-          <div class="spacing"></div>
-          <h3>Set Background Image</h3>
-          <p>Change the site's background image.</p>
-          <input type="text" id="bginput" placeholder="Enter image URL" />
-          <div class="spacing"></div>
-          <button class="btn btn-primary" id="bgset">Save</button>
-          <button class="btn btn-danger" id="clear-bg">Reset</button>
+      <div class="section-card">
+        <h2>Custom Tab Settings</h2>
+        <div class="form-group">
+          <h3>Tab Title</h3>
+          <p>Customize the browser tab title.</p>
+          <input type="text" id="tab-title" placeholder="Enter custom title">
         </div>
-
-        <!-- Performance -->
-        <div class="content-section" id="performance">
-          <h2>Performance</h2>
-          <p>Adjust settings to enhance performance based on your system capabilities.</p>
-          <h3>Particles</h3>
-          <p>Particles Toggle</p>
-          <select id="p-select" class="select">
-            <option value="true">On</option>
-            <option value="false">Off</option>
-          </select>
+        <div class="form-group">
+          <h3>Tab Icon</h3>
+          <p>Set a custom favicon URL for the browser tab.</p>
+          <input type="text" id="tab-icon" placeholder="Enter icon URL">
         </div>
+      </div>
 
-        <!-- Proxy & Browser -->
-        <div class="content-section" id="proxy">
-          <h2>Proxy & Browser</h2>
-          <div>
-            <h3>Proxy</h3>
-            <p>Proxies operate the unblocking backend, enhancing your access to games and apps. Adjusting the proxy can improve game performance, speed up site loading, and enhance your overall experience.</p>
-            <select id="proxy-select" class="select">
-              <option value="uv">Ultraviolet</option>
-              <option value="sj-wip">Scramjet WIP</option>
-              <option value="ec">Eclipse</option>
-            </select>
-          </div>
-          <div class="spacing"></div>
-          <div>
-            <h3>Transport</h3>
-            <p>Transport refers to how the proxy transmits information. While changing the transport can improve the performance of some proxies, it might cause issues for others. This feature is advanced and not recommended for those unfamiliar with it.</p>
-            <select id="trans-select" class="select">
-              <option value="epoxy">Epoxy</option>
-              <option value="libcurl">Libcurl</option>
-            </select>
-          </div>
-          <div class="spacing"></div>
-          <div>
-            <h3>Search Engine</h3>
-            <p>The Search Engine Selector allows you to choose from multiple search engines, offering customizable options and performance insights for an improved search experience.</p>
-            <select id="engine-select" class="select">
-              <option value="google">Google</option>
-              <option value="duckduckgo">DuckDuckGo</option>
-            </select>
-          </div>
+      <div class="section-card">
+        <h2>Panic Key</h2>
+        <p>Set a keyboard shortcut to quickly close or hide the site.</p>
+        <input type="text" id="panic-key" placeholder="Type your panic key" maxlength="20">
+      </div>
+    </section>
+
+    <!-- Themes Section -->
+    <section id="themes" class="section">
+      <div class="section-card">
+        <h2>Appearance</h2>
+        <h3>Theme Selection</h3>
+        <p>Choose a color theme to personalize your experience.</p>
+        <select id="theme-select">
+          <option value="default">Default</option>
+          <option value="ocean">Ocean</option>
+          <option value="teal">Teal</option>
+          <option value="slate">Slate</option>
+        </select>
+
+        <h3>Custom Background</h3>
+        <p>Set a custom background image using a URL.</p>
+        <div class="form-group">
+          <input type="text" id="bg-input" placeholder="Enter image URL">
         </div>
+        <button class="btn btn-primary" id="save-bg">Save Background</button>
+        <button class="btn btn-danger" id="reset-bg">Reset Background</button>
+      </div>
+    </section>
 
-        <!-- Save Data -->
-        <div class="content-section" id="save">
-          <h3>Save Data</h3>
-          <p>Export your Platinum data on this site and import it on another site. This is useful because this site might be blocked in the future, but you don't want to lose your save data.</p>
-          <p style="color: red;">Importing a save file will overwrite your current saves!</p>
-          <button class="btn btn-primary" onclick="exportSaveData();">Export Save</button>
-          <button class="btn btn-primary" onclick="importSaveData();">Import Save</button>
+    <!-- Performance Section -->
+    <section id="performance" class="section">
+      <div class="section-card">
+        <h2>Performance Settings</h2>
+        <p>Optimize the site's performance based on your device capabilities.</p>
+        <h3>Particle Effects</h3>
+        <p>Toggle animated background particles on or off.</p>
+        <select id="particles-select">
+          <option value="true">Enabled</option>
+          <option value="false">Disabled</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Proxy & Browser Section -->
+    <section id="proxy" class="section">
+      <div class="section-card">
+        <h2>Proxy Configuration</h2>
+        <h3>Proxy Backend</h3>
+        <p>Select the proxy service that handles unblocking. Different proxies may offer better performance for different sites.</p>
+        <select id="proxy-select">
+          <option value="uv">Ultraviolet</option>
+          <option value="sj">Scramjet</option>
+          <option value="ec">Eclipse</option>
+        </select>
+
+        <h3>Transport Method</h3>
+        <p>Choose how the proxy transmits data. Advanced setting - only change if you know what you're doing.</p>
+        <select id="transport-select">
+          <option value="epoxy">Epoxy</option>
+          <option value="libcurl">Libcurl</option>
+        </select>
+
+        <h3>Search Engine</h3>
+        <p>Select your preferred search engine for the browser.</p>
+        <select id="engine-select">
+          <option value="google">Google</option>
+          <option value="duckduckgo">DuckDuckGo</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Import/Export Section -->
+    <section id="save" class="section">
+      <div class="section-card">
+        <h2>Data Management</h2>
+        <h3>Export & Import Settings</h3>
+        <p>Save your settings to a file and restore them later or on a different device.</p>
+        <p class="warning-text">⚠️ Warning: Importing a save file will overwrite all your current settings!</p>
+        <div class="form-group">
+          <button class="btn btn-primary" id="export-btn">Export Settings</button>
+          <button class="btn btn-primary" id="import-btn">Import Settings</button>
         </div>
+      </div>
+    </section>
 
-        <!-- Statistics -->
-        <div class="content-section" id="statistics">
-          <h2>About & Statistics</h2>
-          <p>View application information, stats, and usage history.</p>
-          <div class="spacing"></div>
-          <h2>Uptime</h2>
-          <p>You can check the Platinum uptime <a href="https://platinum.betteruptime.com/" target="_blank" rel="noopener noreferrer">here</a></p>
-        </div>
-      </div> <!-- End of content -->
-    </div> <!-- End of settings-container -->
-  </div> <!-- End of main-content -->
-</div> <!-- End of layout-container -->
+    <!-- Statistics Section -->
+    <section id="statistics" class="section">
+      <div class="section-card">
+        <h2>About & Statistics</h2>
+        <p>View information about Platinum and check service status.</p>
+        <h3>Service Uptime</h3>
+        <p>Monitor the current status and uptime of Platinum services at <a href="https://platinum.betteruptime.com/" target="_blank" rel="noopener noreferrer">platinum.betteruptime.com</a></p>
+      </div>
+    </section>
 
-<!-- Script for menu item clicks -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const menuItems = document.querySelectorAll('.menu-item');
-    const contentSections = document.querySelectorAll('.content-section');
+  </main>
+</div>
 
-    menuItems.forEach((item) => {
-      item.addEventListener('click', function () {
-        // Remove active class from all menu items
-        menuItems.forEach((mi) => mi.classList.remove('active'));
-        // Add active class to clicked menu item
-        this.classList.add('active');
-
-        // Show corresponding section
-        const sectionId = this.getAttribute('data-section');
-        contentSections.forEach((section) => {
-          section.classList.remove('active');
-        });
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-          setTimeout(() => {
-            targetSection.classList.add('active');
-          }, 50);
-        }
-      });
-    });
-  });
-</script>
 <script src="/assets/js/themes.js"></script>
+<script>
+// Navigation
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.section');
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const target = item.dataset.section;
+    
+    navItems.forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    
+    sections.forEach(s => s.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+  });
+});
+
+// LocalStorage utility
+const storage = {
+  get: (key, defaultValue = null) => localStorage.getItem(key) ?? defaultValue,
+  set: (key, value) => localStorage.setItem(key, value),
+  getBool: (key, defaultValue = false) => localStorage.getItem(key) !== 'false' && (localStorage.getItem(key) === 'true' || defaultValue)
+};
+
+// Initialize all settings
+const initSettings = () => {
+  // Toggles
+  const abToggle = document.getElementById('ab-toggle');
+  const clickoffToggle = document.getElementById('clickoff-toggle');
+  
+  abToggle.checked = storage.getBool('ab', true);
+  clickoffToggle.checked = storage.getBool('clickoff', true);
+  
+  abToggle.addEventListener('change', () => storage.set('ab', abToggle.checked));
+  clickoffToggle.addEventListener('change', () => storage.set('clickoff', clickoffToggle.checked));
+  
+  // Text inputs
+  const tabTitle = document.getElementById('tab-title');
+  const tabIcon = document.getElementById('tab-icon');
+  const panicKey = document.getElementById('panic-key');
+  const bgInput = document.getElementById('bg-input');
+  
+  tabTitle.value = storage.get('CustomName', '');
+  tabIcon.value = storage.get('CustomIcon', '');
+  panicKey.value = storage.get('panicKey', '');
+  
+  const updateTabSettings = () => {
+    const title = tabTitle.value.trim();
+    const icon = tabIcon.value.trim();
+    
+    if (title) {
+      document.title = title;
+      storage.set('CustomName', title);
+    }
+    
+    if (icon) {
+      let link = document.getElementById('tab-favicon');
+      if (!link) {
+        link = document.createElement('link');
+        link.id = 'tab-favicon';
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = icon;
+      storage.set('CustomIcon', icon);
+    }
+  };
+  
+  tabTitle.addEventListener('input', updateTabSettings);
+  tabIcon.addEventListener('input', updateTabSettings);
+  panicKey.addEventListener('input', () => storage.set('panicKey', panicKey.value));
+  
+  // Selects
+  const themeSelect = document.getElementById('theme-select');
+  const proxySelect = document.getElementById('proxy-select');
+  const transportSelect = document.getElementById('transport-select');
+  const engineSelect = document.getElementById('engine-select');
+  const particlesSelect = document.getElementById('particles-select');
+  
+  themeSelect.value = storage.get('theme', 'default');
+  proxySelect.value = storage.get('proxy', 'uv');
+  transportSelect.value = storage.get('transport', 'epoxy');
+  engineSelect.value = storage.get('searchEngine', 'duckduckgo');
+  particlesSelect.value = storage.get('particles', 'true');
+  
+  themeSelect.addEventListener('change', () => storage.set('theme', themeSelect.value));
+  proxySelect.addEventListener('change', () => storage.set('proxy', proxySelect.value));
+  transportSelect.addEventListener('change', () => storage.set('transport', transportSelect.value));
+  engineSelect.addEventListener('change', () => storage.set('searchEngine', engineSelect.value));
+  particlesSelect.addEventListener('change', () => storage.set('particles', particlesSelect.value));
+  
+  // Background image
+  document.getElementById('save-bg').addEventListener('click', () => {
+    const url = bgInput.value.trim();
+    if (url) {
+      document.documentElement.style.setProperty('--custom-bg', `url(${url})`);
+      storage.set('backgroundImage', url);
+    }
+  });
+  
+  document.getElementById('reset-bg').addEventListener('click', () => {
+    document.documentElement.style.setProperty('--custom-bg', 'none');
+    bgInput.value = '';
+    localStorage.removeItem('backgroundImage');
+  });
+  
+  // Load saved background
+  const savedBg = storage.get('backgroundImage');
+  if (savedBg) {
+    document.documentElement.style.setProperty('--custom-bg', `url(${savedBg})`);
+    bgInput.value = savedBg;
+  }
+};
+
+// Export/Import functionality
+const exportSettings = () => {
+  const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
+    const [key, value] = cookie.split('=');
+    if (key) acc[key] = value;
+    return acc;
+  }, {});
+  
+  const localStorageData = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    localStorageData[key] = localStorage.getItem(key);
+  }
+  
+  const data = {
+    cookies,
+    localStorage: localStorageData
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'save_data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+const importSettings = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json';
+  
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target.result);
+        
+        if (data.cookies) {
+          Object.entries(data.cookies).forEach(([key, value]) => {
+            document.cookie = `${key}=${value}; path=/`;
+          });
+        }
+        
+        if (data.localStorage) {
+          Object.entries(data.localStorage).forEach(([key, value]) => {
+            localStorage.setItem(key, value);
+          });
+        }
+        
+        alert('Save data imported successfully!');
+        location.reload();
+      } catch (err) {
+        alert('Failed to import save data. Please check the file format.');
+        console.error(err);
+      }
+    };
+    reader.readAsText(file);
+  });
+  
+  input.click();
+};
+
+document.getElementById('export-btn').addEventListener('click', exportSettings);
+document.getElementById('import-btn').addEventListener('click', importSettings);
+
+// Initialize on load
+initSettings();
+</script>
+
 </body>
 </html>
