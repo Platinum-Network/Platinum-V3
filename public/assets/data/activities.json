@@ -843,5 +843,20 @@
     "url": "https://slowroads.io/",
     "name": "slowroads.io",
     "image": "/assets/imgs/slowroads.png"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/refs/heads/main/subway_surfers_classic/index.html",
+    "name": "Subway Surfers",
+    "image": "/assets/imgs/sub.png"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/refs/heads/main/rocketpult/index.html",
+    "name": "Rocket Pult",
+    "image": "/assets/imgs/rocketpult.png"
+  },
+  {
+    "url": "https://rawcdn.githack.com/thefluxion/CDN/refs/heads/main/bindingofissac1/index.html",
+    "name": "The Binding of Isaac",
+    "image": "/assets/imgs/bindingofissac.png"
   }
 ]
