@@ -4,36 +4,47 @@ const sjDecode = document.getElementById('sjdecoder');
 const sjDecodeButton = document.getElementById('decodesj');
 const ecDecode = document.getElementById('ecdecoder');
 const ecDecodeButton = document.getElementById('decodeec');
+const apiBase = `${window.location.protocol}//${window.location.host}`;
 
 function uvDecodeUrl(url) {
-    const decodedUrl = __uv$config.decodeUrl(url);
-    return decodedUrl;
+    return __uv$config.decodeUrl(url);
 }
 window.uvDecodeUrl = uvDecodeUrl;
 
 function ecDecodeUrl(url) {
-    const decodedUrl = __eclipse$config.codec.encode(url);
-    return decodedUrl;
+    return __eclipse$config.codec.encode(url);
 }
-window.uvDecodeUrl = uvDecodeUrl;
+window.ecDecodeUrl = ecDecodeUrl;
 
 function sjDecodeUrl(url) {
-    const decodedUrl = decodeURIComponent(url);
-    return decodedUrl;
+    return decodeURIComponent(url);
 }
 window.sjDecodeUrl = sjDecodeUrl;
 
-const providers = ['lightspeed', 'fortiguard', 'palo', 'blocksi' ,"blocksiai"];
-
+// Fix: add missing cleanURL()
 function cleanURL(url) {
-    url = url.replace(/^https?:\/\//, ''); // remove protocol
-    url = url.replace(/^www\./, '');       // remove www
-    return url;
+    return url
+        .replace(/^https?:\/\//, '')
+        .replace(/^www\./, '');
 }
+
+// Provider list including Cisco
+const providers = [
+    'lightspeed',
+    'fortiguard',
+    'palo',
+    'blocksi',
+    'blocksiai',
+    'cisco'
+];
+
+const displayNames = {
+    cisco: 'Cisco Umbrella'
+};
 
 async function checkURL() {
     const resultsEl = document.getElementById('results');
-    resultsEl.innerHTML = ''; // delete old results immediately
+    resultsEl.innerHTML = '';
 
     let url = document.getElementById('urlInput').value.trim();
     if (!url) return alert('Please enter a URL');
@@ -41,56 +52,55 @@ async function checkURL() {
     url = cleanURL(url);
 
     const promises = providers.map(provider =>
-        fetch(`https://v2.mathkits.org/${provider}?url=${encodeURIComponent(url)}`)
+        fetch(`${apiBase}/filters/${provider}/check/${encodeURIComponent(url)}`)
             .then(res => res.json())
-            .then(data => ({ provider, blocked: data.blocked }))
-            .catch(() => ({ provider, blocked: 'Error' }))
+            .then(data => ({
+                provider,
+                blocked: data.blocked,
+                category: data.category || 'Unknown'
+            }))
+            .catch(() => ({ provider, blocked: 'Error', category: null }))
     );
 
     const results = await Promise.all(promises);
 
     results.forEach(r => {
         const li = document.createElement('li');
-        li.textContent = r.provider.charAt(0).toUpperCase() + r.provider.slice(1);
-        const statusSpan = document.createElement('span');
+
+        const name = displayNames[r.provider] || 
+            (r.provider.charAt(0).toUpperCase() + r.provider.slice(1));
+
+        li.textContent = name + ' - ';
+
+        const status = document.createElement('span');
 
         if (r.blocked === true) {
-            statusSpan.textContent = 'Blocked';
-            statusSpan.style.color = '#f87171'; // red
+            status.textContent = `Blocked (${r.category})`;
+            status.style.color = '#f87171';
         } else if (r.blocked === false) {
-            statusSpan.textContent = 'Not Blocked';
-            statusSpan.style.color = '#34d399'; // green
+            status.textContent = 'Not Blocked';
+            status.style.color = '#34d399';
         } else {
-            statusSpan.textContent = 'Error';
-            statusSpan.style.color = '#9ca3af'; // gray
+            status.textContent = 'Error';
+            status.style.color = '#9ca3af';
         }
 
-        li.appendChild(statusSpan);
+        li.appendChild(status);
         resultsEl.appendChild(li);
     });
 }
 
 uvDecodeButton.addEventListener('click', () => {
-    if (uvDecode.value === '' || uvDecode.value === null || uvDecode.value === " ") {
-        alert('Please enter a URL to decode.');
-        return;
-    }
-    var decodedURL = window.uvDecodeUrl(uvDecode.value);
-    uvDecode.value = decodedURL;
+    if (!uvDecode.value.trim()) return alert('Please enter a URL to decode.');
+    uvDecode.value = window.uvDecodeUrl(uvDecode.value);
 });
+
 sjDecodeButton.addEventListener('click', () => {
-    if (sjDecode.value === '' || sjDecode.value === null || sjDecode.value === " ") {
-        alert('Please enter a URL to decode.');
-        return;
-    }
-    var decodedURL = window.sjDecodeUrl(sjDecode.value);
-    sjDecode.value = decodedURL;
+    if (!sjDecode.value.trim()) return alert('Please enter a URL to decode.');
+    sjDecode.value = window.sjDecodeUrl(sjDecode.value);
 });
+
 ecDecodeButton.addEventListener('click', () => {
-    if (ecDecode.value === '' || ecDecode.value === null || ecDecode.value === " ") {
-        alert('Please enter a URL to decode.');
-        return;
-    }
-    var decodedURL = window.ecDecodeUrl(ecDecode.value);
-    ecDecode.value = decodedURL;
+    if (!ecDecode.value.trim()) return alert('Please enter a URL to decode.');
+    ecDecode.value = window.ecDecodeUrl(ecDecode.value);
 });

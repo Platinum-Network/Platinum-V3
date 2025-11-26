@@ -116,6 +116,25 @@ fastify.register(fastifyStatic, {
 	decorateReply: false,
 });
 
+fastify.get('/filters/:provider/check/:url', async (request, reply) => {
+  const { provider, url } = request.params;
+
+  if (!url) {
+    return reply.status(400).send({ error: 'Missing URL parameter' });
+  }
+
+  try {
+    // Fetch from the real API
+    const response = await fetch(
+      `http://check.platinumunblocker.com/filters/${provider}/check/${encodeURIComponent(url)}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    reply.status(500).send({ error: 'Failed to fetch data', details: err.message });
+  }
+});
+
 fastify.register(fastifyStatic, {
 	root: baremuxPath,
 	prefix: "/baremux/",
