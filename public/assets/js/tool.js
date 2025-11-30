@@ -35,7 +35,9 @@ const providers = [
     'palo',
     'blocksi',
     'blocksiai',
-    'cisco'
+    'cisco',
+    'linewize',
+    'goguardian'
 ];
 
 const displayNames = {
