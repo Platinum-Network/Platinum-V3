@@ -145,7 +145,7 @@ fastify.register(fastifyStatic, {
 // HTML page routes
 // ---------------------
 const pages = [
-  { path: "/", file: "/math/index.html" },
+  { path: "/", file: "rindex.html" },
   { path: "/@", file: "rindex.html" },
   { path: "/lessons", file: "games.html" },
   { path: "/tools", file: "apps.html" },
